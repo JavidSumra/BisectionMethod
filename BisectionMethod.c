@@ -1,33 +1,43 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-
+#define f(x) pow(x, 3) - 4 * x - 9 // Write Your Function Definition Here
 int main()
 {
-    int maxi;
-    double intervalA, intervalB, mid, result;
-    printf("Enter Two Interval a and b:");
-    scanf("%lf %lf", &intervalA, &intervalB);
-    printf("Enter Number of Max Iteration:");
-    scanf("%d", &maxi);
-    printf("Initial Interval: %lf %lf\n", intervalA, intervalB);
-    while (maxi >= 0)
+    int step = 1;
+    double intervalA, intervalB, mid, result, error, func1, func2;
+start:
+    printf("\nEnter Two Interval a and b:");
+    scanf("%lf %lf", &intervalA, &intervalB); // Enter Your Interval Here
+    printf("\nEnter Tolrable Error:");
+    scanf("%lf", &error); // Enter Your Correction of Decimal Point
+    func1 = f(intervalA);
+    func2 = f(intervalB);
+    if (func1 * func2 > 0.0)
     {
-        mid = ((intervalA + intervalB) / 2);
-        // result = pow(mid, 3) - 4 * mid - 9;
-        // result = pow(mid, 3) - 3;
-        result = pow(mid, 3) - mid - 1;
-        if (result < 0)
+        printf("\nIncorrect Initial Interval");
+        goto start;
+    }
+    else
+    {
+        printf("\nInitial Interval: %lf %lf\n", intervalA, intervalB);
+        do
         {
-            intervalA = mid;
-            printf("Interval:%lf %lf\n", intervalA, intervalB);
-        }
-        else if (result > 0)
-        {
-            intervalB = mid;
-            printf("Interval:%lf %lf\n", intervalA, intervalB);
-        }
-        --maxi;
+            mid = ((intervalA + intervalB) / 2);
+            result = f(mid);
+            if (result < 0)
+            {
+                intervalA = mid;
+                printf("\n(%d) Interval : %lf\t%lf\n", step, intervalA, intervalB);
+            }
+            else if (result > 0)
+            {
+                intervalB = mid;
+                printf("\n(%d) Interval : %lf\t%lf\n", step, intervalA, intervalB);
+            }
+            step++;
+        } while (fabs(result) > error);
+        printf("\nRoot:%lf", mid);
     }
 
     return 0;
